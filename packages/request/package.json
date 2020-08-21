@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@k/use-axios": "file:../useAxios"
+    "@k/use-axios": "^0.0.2-alpha.0"
   },
-  "gitHead": "0a6af370fcb5a742d5d425489a3f622b63963c24"
+  "gitHead": "cfb2ea7d9fca777be8a972183cb1187021b26988"
 }
