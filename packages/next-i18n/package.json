@@ -1,0 +1,12 @@
+{
+  "name": "@k/next-i18n",
+  "version": "1.0.1",
+  "description": "next-i18nnext project setup",
+  "main": "index.js",
+  "author": "hui.liu",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "next-i18next": "^4.2.1"
+  }
+}
