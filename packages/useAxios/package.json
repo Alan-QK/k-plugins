@@ -20,5 +20,6 @@
   "homepage": "https://github.com/use-hooks/react-hooks-axios#readme",
   "dependencies": {
     "axios": "^0.18.0"
-  }
+  },
+  "gitHead": "0a6af370fcb5a742d5d425489a3f622b63963c24"
 }
