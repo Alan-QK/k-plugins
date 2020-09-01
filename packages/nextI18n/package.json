@@ -3,9 +3,8 @@
   "version": "0.0.4",
   "description": "next-i18nnext project setup",
   "main": "index.js",
-  "author": "hui.liu",
+  "author": "",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "next-i18next": "^4.2.1"
   }
