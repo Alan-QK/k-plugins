@@ -1,13 +1,13 @@
 {
   "name": "@k/request",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "license": "MIT",
   "dependencies": {
-    "@k/use-axios": "^0.0.4"
+    "@k/use-axios": "^0.0.5"
   },
   "gitHead": "7ddf4f39709b1836ac690c8622094485801dbeaf"
 }
