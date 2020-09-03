@@ -1,14 +1,9 @@
-// import { useState } from 'react';
-const { useState } = require('react')
-const axios = require('axios')
-const useAxios = require('@packages/useAxios')
-const Qs = require('qs')
-// import Qs from 'qs';
-// import axios from 'axios';
-// import useAxios from '@packages/useAxios';
-// import Qs from 'qs';
+import { useState } from 'react';
+import axios from 'axios';
+import useAxios from '@k/useAxios';
+import Qs from 'qs';
 
-const defaultOptions = {
+export const defaultOptions = {
   withCredentials: true,
   headers: {
     Accept: 'application/json'
@@ -61,7 +56,7 @@ function _transformUrl(origin_url, data = {}, rmEnd) {
   };
 }
 
-const interceptResponse = ({ handleUnauthorized, handleSuccess, handleError }) => {
+export const interceptResponse = ({ handleUnauthorized, handleSuccess, handleError }) => {
   // Global response handler
   axios.interceptors.response.use(handleSuccess, function onError(error) {
     if (error && error.response && error.response.status === 401) {
@@ -76,7 +71,7 @@ const interceptResponse = ({ handleUnauthorized, handleSuccess, handleError }) =
   });
 };
 
-const get = (apiUrl, params = {}, options = defaultOptions, rmEnd = false) => {
+export const get = (apiUrl, params = {}, options = defaultOptions, rmEnd = false) => {
   let { url, data } = _transformUrl(apiUrl, params, rmEnd);
   return axios({
     url,
@@ -89,7 +84,7 @@ const get = (apiUrl, params = {}, options = defaultOptions, rmEnd = false) => {
   });
 };
 
-const post = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+export const post = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -102,7 +97,7 @@ const post = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   });
 };
 
-const put = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+export const put = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -115,7 +110,7 @@ const put = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   });
 };
 
-const patch = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+export const patch = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -128,7 +123,7 @@ const patch = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   });
 };
 
-const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+export const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -141,7 +136,7 @@ const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   });
 };
 
-const useRequest = (url, opts = {}) => {
+export const useRequest = (url, opts = {}) => {
   const {
     onData = () => { },
     axiosOptions = {},
@@ -173,14 +168,3 @@ const useRequest = (url, opts = {}) => {
     data
   };
 };
-
-module.exports = {
-  get,
-  post,
-  put,
-  patch,
-  del,
-  useRequest,
-  interceptResponse,
-  defaultOptions
-}
