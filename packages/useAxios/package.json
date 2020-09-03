@@ -1,6 +1,6 @@
 {
   "name": "@k/use-axios",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Custom React Hooks for Axios.js",
   "main": "index.js",
   "repository": {
