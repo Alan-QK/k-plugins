@@ -1,7 +1,12 @@
-import { useState } from 'react';
-import axios from 'axios';
-import useAxios from '@packages/useAxios';
-import Qs from 'qs';
+// import { useState } from 'react';
+const { useState } = require('react')
+const axios = require('axios')
+const useAxios = require('@packages/useAxios')
+const Qs = require('qs')
+// import Qs from 'qs';
+// import axios from 'axios';
+// import useAxios from '@packages/useAxios';
+// import Qs from 'qs';
 
 export const defaultOptions = {
   withCredentials: true,
@@ -24,7 +29,7 @@ function _transformUrl(origin_url, data = {}, rmEnd) {
    * 判断目标字符串是否以指定字符串结尾
    * @param {*} endStr
    */
-  String.prototype.endWith = function(endStr) {
+  String.prototype.endWith = function (endStr) {
     let d = this.length - endStr.length;
 
     return d >= 0 && this.lastIndexOf(endStr) === d;
@@ -77,7 +82,7 @@ export const get = (apiUrl, params = {}, options = defaultOptions, rmEnd = false
     url,
     method: 'get',
     params: data,
-    paramsSerializer: function(params) {
+    paramsSerializer: function (params) {
       return Qs.stringify(params);
     },
     ...{ ...defaultOptions, ...options }
@@ -138,7 +143,7 @@ export const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => 
 
 export const useRequest = (url, opts = {}) => {
   const {
-    onData = () => {},
+    onData = () => { },
     axiosOptions = {},
     handleResponseData = data => data,
     ...useAxiosOptions
@@ -168,3 +173,14 @@ export const useRequest = (url, opts = {}) => {
     data
   };
 };
+
+module.exports = {
+  get,
+  post,
+  put,
+  patch,
+  del,
+  useRequest,
+  interceptResponse,
+  defaultOptions
+}
