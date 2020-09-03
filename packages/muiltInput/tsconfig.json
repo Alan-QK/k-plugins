@@ -18,6 +18,7 @@
     "forceConsistentCasingInFileNames": true //禁止对同一文件使用大小写不一致的引用。
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "./dist/**/*"
   ] //忽略编译文件
 }
