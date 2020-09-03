@@ -1,8 +1,12 @@
 /* eslint-disable max-len */
-import { useState, useEffect, useReducer } from 'react';
-import axios from 'axios';
+const { useState, useEffect, useReducer } = require('react')
+const axios = require('axios')
+const { initialResponse, responseReducer } = require('./reducers');
+// const { useState, useEffect, useReducer } = require('react')
+// import { useState, useEffect, useReducer } from 'react';
+// import axios from 'axios';
 
-import { initialResponse, responseReducer } from './reducers';
+// import { initialResponse, responseReducer } from './reducers';
 
 /**
  * Params
@@ -95,4 +99,5 @@ const useAxios = ({
   };
 };
 
-export default useAxios;
+// export default useAxios;
+module.exports = useAxios;

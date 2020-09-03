@@ -1,6 +1,6 @@
-export const initialResponse = { response: null, error: null, loading: false };
+const initialResponse = { response: null, error: null, loading: false };
 
-export function responseReducer(state, action) {
+function responseReducer(state, action) {
   switch (action.type) {
     case 'init':
       return { response: null, error: null, loading: true };
@@ -11,4 +11,9 @@ export function responseReducer(state, action) {
     default:
       return initialResponse;
   }
+}
+
+module.exports = {
+  initialResponse,
+  responseReducer
 }
