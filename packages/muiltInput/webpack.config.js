@@ -36,6 +36,7 @@ module.exports={
       filename:'index.js',
       library: "ANTD_BASE_MODULE",
       libraryTarget:'umd',
+      globalObject: 'this',
       umdNamedDefine: true
   },
 }
