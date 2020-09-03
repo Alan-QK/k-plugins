@@ -8,7 +8,7 @@ const Qs = require('qs')
 // import useAxios from '@packages/useAxios';
 // import Qs from 'qs';
 
-export const defaultOptions = {
+const defaultOptions = {
   withCredentials: true,
   headers: {
     Accept: 'application/json'
@@ -61,7 +61,7 @@ function _transformUrl(origin_url, data = {}, rmEnd) {
   };
 }
 
-export const interceptResponse = ({ handleUnauthorized, handleSuccess, handleError }) => {
+const interceptResponse = ({ handleUnauthorized, handleSuccess, handleError }) => {
   // Global response handler
   axios.interceptors.response.use(handleSuccess, function onError(error) {
     if (error && error.response && error.response.status === 401) {
@@ -76,7 +76,7 @@ export const interceptResponse = ({ handleUnauthorized, handleSuccess, handleErr
   });
 };
 
-export const get = (apiUrl, params = {}, options = defaultOptions, rmEnd = false) => {
+const get = (apiUrl, params = {}, options = defaultOptions, rmEnd = false) => {
   let { url, data } = _transformUrl(apiUrl, params, rmEnd);
   return axios({
     url,
@@ -89,7 +89,7 @@ export const get = (apiUrl, params = {}, options = defaultOptions, rmEnd = false
   });
 };
 
-export const post = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+const post = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -102,7 +102,7 @@ export const post = (apiUrl, params, options = defaultOptions, rmEnd = false) =>
   });
 };
 
-export const put = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+const put = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -115,7 +115,7 @@ export const put = (apiUrl, params, options = defaultOptions, rmEnd = false) => 
   });
 };
 
-export const patch = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+const patch = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -128,7 +128,7 @@ export const patch = (apiUrl, params, options = defaultOptions, rmEnd = false) =
   });
 };
 
-export const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
+const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => {
   let { url, data = {} } = _transformUrl(apiUrl, params, rmEnd);
   if (data.user_id) url += `?user_id=${data.user_id}`;
   delete data.user_id;
@@ -141,7 +141,7 @@ export const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => 
   });
 };
 
-export const useRequest = (url, opts = {}) => {
+const useRequest = (url, opts = {}) => {
   const {
     onData = () => { },
     axiosOptions = {},
