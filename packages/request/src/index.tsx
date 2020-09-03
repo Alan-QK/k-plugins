@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import useAxios from '@k/useAxios';
+import useAxios from '@k/use-axios';
 import Qs from 'qs';
 
 export const defaultOptions = {
@@ -24,6 +24,7 @@ function _transformUrl(origin_url, data = {}, rmEnd) {
    * 判断目标字符串是否以指定字符串结尾
    * @param {*} endStr
    */
+  // @ts-ignore
   String.prototype.endWith = function (endStr) {
     let d = this.length - endStr.length;
 
@@ -142,7 +143,7 @@ export const useRequest = (url, opts = {}) => {
     axiosOptions = {},
     handleResponseData = data => data,
     ...useAxiosOptions
-  } = opts;
+  }:any = opts;
   const [data, setData] = useState(null);
   const defaultOpts = {
     url: url,
