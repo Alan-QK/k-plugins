@@ -15,4 +15,4 @@ const NextI18NextInstance = new NextI18Next({
   serverLanguageDetection: false
 });
 
-export default NextI18NextInstance;
+module.exports = NextI18NextInstance;
