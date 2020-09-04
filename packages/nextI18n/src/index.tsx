@@ -15,5 +15,7 @@ const NextI18NextInstance = new NextI18Next({
   serverLanguageDetection: false
 });
 
-export default NextI18NextInstance;
+const { appWithTranslation, withTranslation, i18n } = NextI18NextInstance;
+
+export default { appWithTranslation, withTranslation, i18n };
 module.exports = NextI18NextInstance;

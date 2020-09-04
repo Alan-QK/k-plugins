@@ -1,2 +1,6 @@
-declare const NextI18NextInstance: any;
-export default NextI18NextInstance;
+declare const _default: {
+    appWithTranslation: any;
+    withTranslation: any;
+    i18n: any;
+};
+export default _default;
