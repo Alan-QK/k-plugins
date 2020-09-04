@@ -17,5 +17,9 @@ const NextI18NextInstance = new NextI18Next({
 
 const { appWithTranslation, withTranslation, i18n } = NextI18NextInstance;
 
-export default { appWithTranslation, withTranslation, i18n };
+export const appNext = appWithTranslation;
+export const useTranslation = withTranslation;
+export const appI18n = i18n;
+
+export default NextI18NextInstance;
 module.exports = NextI18NextInstance;

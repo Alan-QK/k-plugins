@@ -1,6 +1,5 @@
-declare const _default: {
-    appWithTranslation: any;
-    withTranslation: any;
-    i18n: any;
-};
-export default _default;
+declare const NextI18NextInstance: any;
+export declare const appNext: any;
+export declare const useTranslation: any;
+export declare const appI18n: any;
+export default NextI18NextInstance;
