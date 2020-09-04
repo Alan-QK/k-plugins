@@ -90,13 +90,13 @@
     source-map "^0.5.0"
 
 "@babel/generator@^7.11.5", "@babel/generator@^7.7.7":
-  version "7.11.5"
-  resolved "http://120.92.107.202/@babel%2fgenerator/-/generator-7.11.5.tgz#a5582773425a468e4ba269d9a1f701fbca6a7a82"
-  integrity sha512-9UqHWJ4IwRTy4l0o8gq2ef8ws8UPzvtMkVKjTLAiRmza9p9V6Z+OfuNd9fB1j5Q67F+dVJtPC2sZXI8NM9br4g==
+  version "7.11.6"
+  resolved "http://120.92.107.202/@babel%2fgenerator/-/generator-7.11.6.tgz#b868900f81b163b4d464ea24545c61cbac4dc620"
+  integrity sha512-DWtQ1PV3r+cLbySoHrwn9RWEgKMBLLma4OBQloPRyDYvc5msJM9kvTLo1YnlJd1P/ZuKbdli3ijr5q3FvAF3uA==
   dependencies:
     "@babel/types" "^7.11.5"
     jsesc "^2.5.1"
-    source-map "^0.6.1"
+    source-map "^0.5.0"
 
 "@babel/helper-annotate-as-pure@^7.10.4":
   version "7.10.4"
@@ -3878,9 +3878,9 @@ ecc-jsbn@~0.1.1:
     safer-buffer "^2.1.0"
 
 electron-to-chromium@^1.3.488, electron-to-chromium@^1.3.523:
-  version "1.3.560"
-  resolved "http://120.92.107.202/electron-to-chromium/-/electron-to-chromium-1.3.560.tgz#6c3f61fe50324770b75705300e9f98f29312ea8d"
-  integrity sha512-0cEFfOA3sNXfSxo0FIClBhrLVSe/QO9LBiqmmYPm3N/IYyt41NRTa2EhvOMWAOKpjd91t/rq062yhnJzfVMKkQ==
+  version "1.3.561"
+  resolved "http://120.92.107.202/electron-to-chromium/-/electron-to-chromium-1.3.561.tgz#90411a8f45a227ee3cf9219297b2515b5a5359e5"
+  integrity sha512-f9ESwg7KGKqNzfhJ8QRXBEZA/FpiWohHC/xob/Jk7BwUoKdI2xEhp36Y31AJwc5GygPwoMo/4W3ne7IWncW9Zg==
 
 elliptic@^6.5.3:
   version "6.5.3"

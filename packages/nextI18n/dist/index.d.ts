@@ -1,2 +1,2 @@
-declare const NextI18NextInstance: any;
-export default NextI18NextInstance;
+declare const NextI18Next: any;
+declare const path: any;
