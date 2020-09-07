@@ -12,7 +12,6 @@
     "dist/"
   ],
   "dependencies": {
-    "@k/use-axios": "^0.0.13",
     "axios": "^0.20.0",
     "cross-env": "^7.0.2",
     "qs": "^6.9.4",
