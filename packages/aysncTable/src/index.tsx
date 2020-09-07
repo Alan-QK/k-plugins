@@ -63,7 +63,7 @@ const AsyncTable = ({
     current: 1,
     showSizeChanger: true,
     total: 0,
-    showTotal: (totalNum) => t('paginationTotalText', { total: totalNum }),
+    showTotal: (totalNum) => t('common:paginationTotalText', { total: totalNum }),
     pageSize: 10,
     pageSizeOptions: [10, 20, 50, 100],
     position: ['bottomCenter', 'bottomCenter'],
@@ -80,6 +80,8 @@ const AsyncTable = ({
       }
       : {}),
   });
+
+  console.log({t})
 
   const [pagination, setPagination] = useState({
     ...paginationInitial,
