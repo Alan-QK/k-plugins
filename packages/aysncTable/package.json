@@ -1,6 +1,6 @@
 {
   "name": "@gui/aysnc-table",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "webpack-cli": "^3.3.12"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
     "antd": "^4.6.2",
+    "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
 }

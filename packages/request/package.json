@@ -1,6 +1,6 @@
 {
   "name": "@gui/request",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -12,14 +12,14 @@
     "dist/"
   ],
   "dependencies": {
-    "@gui/use-axios": "^0.0.14",
+    "@gui/use-axios": "^0.0.15",
     "cross-env": "^7.0.2",
     "qs": "^6.9.4",
     "react": "^16.13.1"
   },
   "devDependencies": {
-    "axios": "^0.20.0",
     "@types/react": "^16.9.49",
+    "axios": "^0.20.0",
     "clean-webpack-plugin": "^3.0.0",
     "ts-loader": "^8.0.3",
     "typescript": "^4.0.2",
@@ -29,8 +29,8 @@
   },
   "peerDependencies": {
     "axios": "^0.20.0",
-    "react": "^16.13.1",
-    "cross-env": "^7.0.2"
+    "cross-env": "^7.0.2",
+    "react": "^16.13.1"
   },
   "gitHead": "7ddf4f39709b1836ac690c8622094485801dbeaf"
 }
