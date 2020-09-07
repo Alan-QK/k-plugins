@@ -12,7 +12,7 @@
         "*.md"
       ],
       "message": "chore(release): publish",
-      "registry": "http://120.92.107.202"
+      "registry": "http://ec2-54-214-213-150.us-west-2.compute.amazonaws.com/" 
     },
     "bootstrap": {
       "ignore": "component-*",
