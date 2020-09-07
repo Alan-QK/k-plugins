@@ -1,6 +1,6 @@
 {
   "name": "@gui/aysnc-table",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -30,8 +30,8 @@
   },
   "peerDependencies": {
     "@gui/request": "^0.0.5",
-    "lodash": "^4.17.20",
     "antd": "^4.6.2",
+    "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
