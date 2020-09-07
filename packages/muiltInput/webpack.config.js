@@ -15,7 +15,7 @@ module.exports={
       ]
   },
   resolve: {
-      extensions: [ '.tsx' ]
+      extensions: [ '.tsx', '.js', '.ts', '.jsx' ]
   },
   externals: {    //避免打包
     'react': {
