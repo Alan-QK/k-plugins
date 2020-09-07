@@ -81,8 +81,6 @@ const AsyncTable = ({
       : {}),
   });
 
-  console.log({t})
-
   const [pagination, setPagination] = useState({
     ...paginationInitial,
     [options.currentKey]: paginationInitial.current,
