@@ -1,6 +1,6 @@
 {
-  "name": "@gui/use-axios",
-  "version": "0.0.13",
+  "name": "@gui/virtuallist-antd",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -12,11 +12,10 @@
     "dist/"
   ],
   "dependencies": {
-    "@k/use-axios": "^0.0.13",
-    "axios": "^0.20.0",
     "cross-env": "^7.0.2",
-    "qs": "^6.9.4",
-    "react": "^16.13.1"
+    "lodash": "^4.17.20",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@types/react": "^16.9.49",
@@ -28,8 +27,7 @@
     "webpack-cli": "^3.3.12"
   },
   "peerDependencies": {
-    "axios": "^0.20.0",
-    "react": "^16.13.1"
-  },
-  "gitHead": "7ddf4f39709b1836ac690c8622094485801dbeaf"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
 }
