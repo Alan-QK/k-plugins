@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import useAxios from '@k/use-axios';
+import useAxios from '@gui/use-axios';
 import Qs from 'qs';
 
 export const defaultOptions = {
