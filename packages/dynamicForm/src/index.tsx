@@ -1,276 +1,362 @@
-import React, { useState, useRef, useEffect, CSSProperties } from 'react';
+import React from 'react';
+// import { withTranslation } from '@/i18n/index';
+import {
+  Form,
+  Row,
+  Col,
+  Button,
+  Input,
+  InputNumber,
+  Select,
+  Radio,
+  Checkbox,
+  DatePicker,
+} from 'antd';
 
-const wrapperStyle = (row): CSSProperties => ({
-  position: 'relative',
-  border: '1px solid #ddd',
-  height: `calc(${row}em + 2em)`,
-  padding: '0.7em',
-  overflowX: 'hidden',
-  overflowY: 'auto',
-});
+const { RangePicker } = DatePicker;
+import AREANO_LIST from './areanoList';
+import MuiltInput from '@gui/muilt-input';
 
-const basicItemStyle: CSSProperties = {
-  display: 'inline-block',
-  padding: '0px 0.7em',
-  lineHeight: '20px',
-  fontSize: '12px',
-  color: '#999',
-  border: '1px solid #d9d9d9',
+export const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 7 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
 };
 
-const sItemStyle: CSSProperties = {
-  ...basicItemStyle,
-  marginRight: '5px',
-  background: '#fafafa',
-  marginBottom: '5px',
-  maxWidth: '100%',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  verticalAlign: 'top',
-  whiteSpace: 'pre-wrap',
-};
-
-const inputStyle: CSSProperties = {
-  border: 'none',
-  outline: 'none',
-  fontSize: '12px',
-  lineHeight: '22px',
-  verticalAlign: 'top',
-  background: 'transparent',
-  maxHeight: '5em',
-  width: '-webkit-fill-available',
-};
-
-const placeholderStyle: CSSProperties = {
-  position: 'absolute',
-  color: 'rgba(176, 176, 176, 0.8)',
-  fontWeight: 100,
-};
-
-// const errorStyle = {
-//   color: 'rgb(255, 85, 0)',
-//   borderColor: 'red',
-// };
-
-interface MuiltInputProps {
-  value?;
-  onChange?;
-  row?: number;
-  placeholder?;
-  splitSpot?;
-  childValid?;
+interface FormItemProps {
+  key: string;
+  label: string;
+  type?: string;
+  keys?;
+  multiple?: boolean;
+  placeholder?: string;
+  moreOptions?;
+  options?;
+  style?;
+  notForm?;
+  rules?;
+  isRequired?;
 }
 
-const MuiltInput = ({
-  value,
-  onChange,
-  row = 6,
-  placeholder,
-  splitSpot,
-  childValid = () => true,
-}: MuiltInputProps) => {
-  const inputRef: any = useRef();
-  const [words, setWords] = useState<Array<string>>([]);
-  const [inputVal, setInputVal] = useState<string>();
+interface Props {
+  t: any;
+  formItems: Array<FormItemProps | any>;
+  submitFn: (param?: any) => void;
+  cancelFn: (param?: any) => void;
+  defaultVal?: any;
+  subBtn?: {
+    type: any;
+    label: any;
+  };
+  cancelBtn?: {
+    type: any;
+    label?: any;
+  };
+}
 
-  const [editInputValue, setEditInputValue] = useState('');
-  const [editInputVisible, setEditInputVisible] = useState<{ [propname: number]: boolean }>({
-    '-1': false,
-  });
+interface OptionProps {
+  label: string;
+  value: string;
+}
 
-  useEffect(() => {
-    if (value) {
-      setWords(value);
-    }
-  }, [value]);
+// 渲染表单元素
+interface ChildTempProps {
+  t?;
+  value?;
+  onChange?: (value) => void;
+  item?: FormItemProps;
+  isSeniorForm?;
+}
 
-  function resetEditInputState(idx?) {
-    setEditInputVisible({ [idx > -1 ? idx : -1]: false });
-    setEditInputValue('');
-  }
+const prefixSelector = (key) => (
+  <Form.Item noStyle name={key} initialValue="+1">
+    <Select
+      dropdownClassName="phone-pre"
+      optionLabelProp="label"
+      // style={{width: '20%'}}
+      maxTagTextLength={200}
+    >
+      {AREANO_LIST?.map((item) => (
+        <Select.Option key={item.country_id} value={item.country_code}>
+          <span style={{ color: '#666', fontSize: '12px' }}>{item.country_name_cn}</span>
+          <span style={{ float: 'right', color: '#333', fontSize: '12px' }}>
+            ({item.country_code})
+          </span>
+        </Select.Option>
+      ))}
+    </Select>
+  </Form.Item>
+);
 
-  const focusTarget = (e) => {
-    const tarKey = e.target?.dataset?.key;
-    if (tarKey === 'muilt-input-wrapper' || tarKey === 'muilt-input-placeholder') {
-      inputRef?.current.focus();
-
-      if (editInputVisible) {
-        resetEditInputState();
+export const RenderComp = ({ t, item, value, onChange, isSeniorForm }: ChildTempProps) => {
+  const { type, label, options, placeholder, style = {}, moreOptions = {}, multiple } = item || {};
+  switch (type) {
+    case 'select':
+      return (
+        <Select
+          allowClear
+          style={{ ...style }}
+          value={value}
+          onChange={onChange}
+          showSearch
+          filterOption={(input, option) =>
+            option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          placeholder={placeholder ?? t('common:placeholder.select', { name: label })}
+          {...moreOptions}
+        >
+          {options?.map((o) => (
+            <Select.Option key={o.value} value={o.value}>
+              {o.label}
+            </Select.Option>
+          ))}
+        </Select>
+      );
+    case 'date':
+      return (
+        <RangePicker
+          allowClear
+          style={{ ...style }}
+          format="YYYY-MM-DD"
+          value={value}
+          onChange={onChange}
+          placeholder={
+            placeholder ?? [
+              t('common:placeholder.start', { name: label }),
+              t('common:placeholder.end', { name: label }),
+            ]
+          }
+          {...moreOptions}
+        />
+      );
+    case 'date-time':
+      return (
+        <DatePicker
+          allowClear
+          style={{ ...style }}
+          format="YYYY-MM-DD HH:mm:ss"
+          value={value}
+          onChange={onChange}
+          showTime
+          placeholder={placeholder ?? t('common:placeholder.select', { name: label })}
+          {...moreOptions}
+        />
+      );
+    case 'password':
+      return (
+        <Input.Password
+          value={value}
+          onChange={onChange}
+          placeholder={t('common:placeholder.input', { name: label })}
+          autoComplete="new-password"
+          {...moreOptions}
+        />
+      );
+    case 'number':
+      return (
+        <InputNumber
+          value={value}
+          onChange={onChange}
+          className="full-w"
+          placeholder={label}
+          {...moreOptions}
+        />
+      );
+    case 'select':
+      return (
+        <Select
+          value={value}
+          onChange={onChange}
+          placeholder={t('common:placeholder.select', { name: label })}
+          {...moreOptions}
+        >
+          {options?.map((item: OptionProps) => (
+            <Select.Option key={item.value} value={item.value}>
+              {item.label}
+            </Select.Option>
+          ))}
+        </Select>
+      );
+    case 'textarea':
+      return (
+        <Input.TextArea
+          value={value}
+          onChange={onChange}
+          autoSize={{ minRows: 3, maxRows: 8 }}
+          placeholder={t('common:placeholder.input', { name: label })}
+          {...moreOptions}
+        />
+      );
+    case 'radio':
+      return (
+        <Radio.Group value={value} onChange={onChange} {...moreOptions}>
+          {options?.map((item: OptionProps) => (
+            <Radio key={item.value} value={item.value}>
+              {item.label}
+            </Radio>
+          ))}
+        </Radio.Group>
+      );
+    case 'checkbox':
+      return (
+        <Checkbox.Group value={value} onChange={onChange} {...moreOptions}>
+          {options?.map((item: OptionProps) => (
+            <Checkbox key={item.value} value={item.value}>
+              {item.label}
+            </Checkbox>
+          ))}
+        </Checkbox.Group>
+      );
+    case 'phone':
+      const { showPrefixSelector, prefixKey = '_phone_prefix', ...otherOptions } = moreOptions;
+      return (
+        <>
+          <Input
+            addonBefore={showPrefixSelector ? prefixSelector(prefixKey) : null}
+            value={value}
+            onChange={onChange}
+            className="input-phone"
+            autoComplete="off"
+            placeholder={t('common:placeholder.input', { name: label })}
+            {...otherOptions}
+          />
+          {/* <style jsx global>{`
+            .ant-select-dropdown.phone-pre {
+              width: 120px !important;
+            }
+          `}</style> */}
+        </>
+      );
+    case 'muilt-input':
+      return (
+        <MuiltInput
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder ?? t('common:placeholder.input', { name: label })}
+          {...moreOptions}
+        />
+      );
+    default:
+      if (isSeniorForm && multiple) {
+        return (
+          <Input.TextArea
+            allowClear
+            style={{ ...style }}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder ?? t('common:placeholder.input', { name: label })}
+            {...moreOptions}
+          />
+        );
       }
-    }
-  };
-
-  function getSplitedVals(val) {
-    if (!splitSpot) return [val];
-
-    const regStr = new RegExp(`[${splitSpot}]`, 'g');
-    const hasSplitSpot = regStr.test(val);
-    if (!hasSplitSpot) return [val];
-
-    const newVal = val.replace(regStr, ';').split(';');
-    return newVal.map((i) => i.trim()).filter((i) => i);
+      return (
+        <Input
+          allowClear
+          style={{ ...style }}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder ?? t('common:placeholder.input', { name: label })}
+          {...moreOptions}
+        />
+      );
   }
+};
+export const RenderFormBody = (t, formItems, defaultVal?) => (
+  <>
+    {formItems.map((item: FormItemProps) =>
+      item.notForm ? (
+        <Row style={{ lineHeight: 38 }} key={item.key}>
+          <Col span={7} style={{
+            textAlign: 'right',
+            paddingRight: '10px',
+            color: '#333'
+          }}>
+            {item.label}
+          </Col>
+          <Col span={16}>{defaultVal && defaultVal[item.key]}</Col>
+        </Row>
+      ) : (
+          <Form.Item
+            key={item.key}
+            className="mb-10"
+            label={item.label}
+            colon={false}
+            name={item.key}
+            rules={
+              item.isRequired
+                ? [
+                  {
+                    required: true,
+                    message: t(
+                      item.type && ['select', 'radio'].includes(item.type)
+                        ? 'common:placeholder.select'
+                        : 'common:placeholder.input',
+                      { name: item.label }
+                    ),
+                  },
+                  ...(item.rules ?? []),
+                ]
+                : item.rules
+            }
+          >
+            <RenderComp t={t} item={item} />
+          </Form.Item>
+        )
+    )}
+  </>
+);
 
-  function updateVal(type, val?, index?) {
-    let nextVals = words?.slice();
-    switch (type) {
-      case 'new':
-        // val 为新值
-        const nextVal = val?.trim();
-        if (nextVal && words?.indexOf(nextVal) === -1) {
-          nextVals = Array.from(new Set([...nextVals, ...getSplitedVals(val)]));
-        } else {
-          return;
-        }
-        break;
-      case 'delete':
-        // val 为数组下标
-        if (!nextVals.length) return;
-        nextVals.splice(val > -1 ? val : nextVals.length - 1, 1);
-        break;
-      case 'edit':
-        if (!val) {
-          // val 为空等同删除操作
-          nextVals.splice(index, 1);
-        } else if (val !== words[index]) {
-          const prevGroup = nextVals.slice(0, index);
-          const afterGroup = nextVals.slice(index + 1, nextVals.length);
-          nextVals = Array.from(new Set([...prevGroup, ...getSplitedVals(val), ...afterGroup]));
-          resetEditInputState(index);
-        } else {
-          resetEditInputState(index);
-          return;
-        }
-      default:
-        // console.error('Some thing is Error.')
-        break;
-    }
+// eslint-disable-next-line
+const DynamicForm = (props: Props & any) => {
+  const {
+    t,
+    formItems,
+    submitFn,
+    cancelFn,
+    defaultVal,
+    subBtn = {
+      type: 'primary',
+      label: '确认',
+    },
+    cancelBtn = {
+      type: 'default',
+      label: '取消',
+    },
+  } = props;
+  const [form] = Form.useForm();
 
-    setWords(nextVals);
-    onChange(nextVals);
-    setInputVal('');
-  }
-
-  const handleEnterKey = (e, idx?) => {
-    if (e.nativeEvent.keyCode === 13) {
-      //e.nativeEvent获取原生的事件对像
-      updateVal(idx > -1 ? 'edit' : 'new', e.target.value, idx);
-    }
+  const handleSubmit = (values) => {
+    submitFn(values);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.nativeEvent.keyCode === 8 && !e.target.value && words?.length) {
-      updateVal('delete');
-    }
-  };
-  const blurInput = (e, idx?) => {
-    updateVal(idx > -1 ? 'edit' : 'new', e.target.value, idx);
-  };
-
-  const toggleState = (idx) => {
-    words && setEditInputValue(words[idx]);
-    setEditInputVisible({ [idx]: true });
-  };
+  // 默认数据修改后同步修改表单对应的项
 
   return (
-    <div
-      className="wrapper"
-      data-key="muilt-input-wrapper"
-      style={{ ...wrapperStyle(row) }}
-      onClick={focusTarget}
-      onFocus={focusTarget}
+    <Form
+      form={form}
+      className="dynamic-form"
+      style={{
+        width: 400,
+        margin: 'auto'
+      }}
+      {...formItemLayout}
+      onFinish={handleSubmit}
+      initialValues={defaultVal}
     >
-      {!words?.length && !inputVal && (
-        <span
-          style={placeholderStyle}
-          data-key="muilt-input-placeholder"
-          onClick={focusTarget}
-          onFocus={focusTarget}
-        >
-          {placeholder}
-        </span>
-      )}
-
-      {words?.map((i, idx) => {
-        if (editInputVisible[idx]) {
-          return (
-            <input
-              key={i}
-              style={{
-                ...inputStyle,
-                ...basicItemStyle,
-                marginBottom: '5px',
-                width: 'auto',
-                marginRight: '5px',
-              }}
-              value={editInputValue}
-              onChange={(e) => {
-                setEditInputValue(e.target.value);
-              }}
-              onBlur={(e) => blurInput(e, idx)}
-              onKeyPress={(e) => handleEnterKey(e, idx)}
-            />
-          );
-        }
-        return (
-          <span
-            key={i}
-            className="s-item"
-            style={{
-              ...sItemStyle,
-              borderColor: !childValid(i) ? 'red' : '#d9d9d9',
-            }}
-          >
-            <span
-              onDoubleClick={() => toggleState(idx)}
-              style={{
-                display: 'inline-block',
-                overflow: 'hidden',
-                whiteSpace: 'pre-wrap',
-                width: 'calc(100% - 13px)',
-                verticalAlign: 'top',
-                color: !childValid(i) ? 'red' : '#999',
-              }}
-            >
-              {/* {renderItem(i)} */}
-              {i}
-            </span>
-
-            <span
-              role="img"
-              aria-label="close"
-              onClick={() => updateVal('delete', idx)}
-              className="anticon anticon-close ant-tag-close-icon"
-            >
-              <svg
-                viewBox="64 64 896 896"
-                focusable="false"
-                data-icon="close"
-                width="1em"
-                height="1em"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path>
-              </svg>
-            </span>
-          </span>
-        );
-      })}
-
-      <input
-        ref={inputRef}
-        value={inputVal}
-        style={inputStyle}
-        onChange={(e) => {
-          setInputVal(e.target.value);
-        }}
-        onBlur={blurInput}
-        onKeyPress={handleEnterKey}
-        onKeyDown={handleKeyDown}
-      />
-    </div>
+      {RenderFormBody(t, formItems, defaultVal)}
+      <Form.Item wrapperCol={{ offset: 7 }} style={{marginTop: '2em'}}>
+        <Button type={subBtn.type} style={{marginRight: '24px'}} htmlType="submit">
+          {subBtn.label}
+        </Button>
+        {!!cancelBtn && <a onClick={cancelFn}>{cancelBtn.label}</a>}
+      </Form.Item>
+    </Form>
   );
 };
 
-export default MuiltInput;
+export default DynamicForm;
