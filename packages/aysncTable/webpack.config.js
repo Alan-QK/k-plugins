@@ -15,7 +15,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx']
+    extensions: ['.tsx', '.js', '.ts']
   },
   externals: {    //避免打包
     'react': {
@@ -30,6 +30,18 @@ module.exports = {
       amd: 'antd',
       root: 'Antd',
     },
+    'lodash': {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: 'lodash',
+      root: '_',
+    },
+    '@gui/request': {
+      commonjs: '@gui/request',
+      commonjs2: '@gui/request',
+      amd: '@gui/request',
+      root: '@gui/request',
+    }
   },
   optimization: {
     minimizer: [new UglifyJsPlugin()],
