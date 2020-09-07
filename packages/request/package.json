@@ -12,13 +12,13 @@
     "dist/"
   ],
   "dependencies": {
-    "@k/use-axios": "^0.0.12",
-    "axios": "^0.20.0",
+    "@gui/use-axios": "^0.0.14",
     "cross-env": "^7.0.2",
     "qs": "^6.9.4",
     "react": "^16.13.1"
   },
   "devDependencies": {
+    "axios": "^0.20.0",
     "@types/react": "^16.9.49",
     "clean-webpack-plugin": "^3.0.0",
     "ts-loader": "^8.0.3",
