@@ -12,8 +12,10 @@
     "dist/"
   ],
   "dependencies": {
+    "@gui/request": "^0.0.5",
     "antd": "^4.6.2",
     "cross-env": "^7.0.2",
+    "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
@@ -27,6 +29,8 @@
     "webpack-cli": "^3.3.12"
   },
   "peerDependencies": {
+    "@gui/request": "^0.0.5",
+    "lodash": "^4.17.20",
     "antd": "^4.6.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
