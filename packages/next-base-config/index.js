@@ -1,10 +1,10 @@
+const webpack = require('webpack');
 const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 
 module.exports = (nextConfig = {}) => {
   return Object.assign({}, nextConfig, {
-    webpack: (config, isServer) => {
-      console.log(isServer)
-      if (isServer) {
+    webpack: (config, options) => {
+      if (options.isServer) {
         const antStyles = /antd\/.*?\/style.*?/;
         const origExternals = [...config.externals];
         config.externals = [
@@ -31,7 +31,7 @@ module.exports = (nextConfig = {}) => {
       );
 
       // 过滤moment语言包
-      config.plugins.push(new nextConfig.webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+      config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
       // Fix 'fs' module not found on `yarn build`
       // https://github.com/evanw/node-source-map-support/issues/155#issuecomment-368345232
