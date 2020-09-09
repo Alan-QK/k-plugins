@@ -93,7 +93,7 @@ const prefixSelector = (key) => (
 );
 
 export const RenderComp = ({ t, item, value, onChange, isSeniorForm }: ChildTempProps) => {
-  console.log({item})
+  console.log({ item })
   const { type, label, options, placeholder, style = {}, moreOptions = {}, multiple } = item || {};
   switch (type) {
     case 'select':

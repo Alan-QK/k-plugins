@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "@gui/request": "^0.0.5",
-    "antd": "^4.6.2",
+    "antd": "^4.6.3",
     "cross-env": "^7.0.2",
     "lodash": "^4.17.20",
     "react": "^16.13.1",
@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "@gui/request": "^0.0.5",
-    "antd": "^4.6.2",
+    "antd": "^4.6.3",
     "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
