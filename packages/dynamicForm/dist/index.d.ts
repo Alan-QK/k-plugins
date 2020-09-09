@@ -1,4 +1,6 @@
 /// <reference types="react" />
+import "antd/es/form/style/index.css";
+import "antd/es/input/style/index.css";
 export declare const formItemLayout: {
     labelCol: {
         xs: {

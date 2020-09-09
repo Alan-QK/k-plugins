@@ -13,17 +13,11 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.less$/,
+        test: /\.css$/,
         use: [{
           loader: "style-loader" // creates style nodes from JS strings
         }, {
           loader: "css-loader" // translates CSS into CommonJS
-        }, {
-          loader: "less-loader", options: {
-            lessOptions: {
-              javascriptEnabled: true
-            }
-          } // compiles Less to CSS
         }]
       }
     ]
@@ -38,8 +32,13 @@ module.exports = {
       amd: 'react',
       root: 'React',
     },
-    "@gui/muilt-input": "@gui/muilt-input",
-    "moment": "moment"
+    'antd': {
+      commonjs: 'antd',
+      commonjs2: 'antd',
+      amd: 'antd',
+      root: 'Antd',
+    },
+    "@gui/muilt-input": "@gui/muilt-input"
   },
   optimization: {
     minimizer: [new UglifyJsPlugin()],

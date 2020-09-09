@@ -13,6 +13,10 @@ import {
 } from 'antd';
 
 const { RangePicker } = DatePicker;
+
+import "antd/es/form/style/index.css";
+import "antd/es/input/style/index.css";
+
 import AREANO_LIST from './areanoList';
 import MuiltInput from '@gui/muilt-input';
 
