@@ -105,7 +105,6 @@ const FilteredItems = ({ t, params, handleParam }) => {
         {t('reset')}
       </Button>
 
-      {/* @ts-ignore */}
       <style jsx>{`
         .filters-review {
           width: 100%;
@@ -377,7 +376,7 @@ const FilterGroup = ({
         params={params}
         filterItems={items.filter((i) => i.multiple)}
       />
-      {/* @ts-ignore */}
+      
       <style jsx>{`
         .top-search {
           position: relative;
@@ -392,7 +391,7 @@ const FilterGroup = ({
           align-items: center;
         }
       `}</style>
-      {/* @ts-ignore */}
+      
       <style jsx global>{`
         .search-form {
           display: flex;
