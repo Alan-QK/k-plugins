@@ -46,13 +46,13 @@ const BatchSearchModal = ({ t, visible, batchCallbackFn, params = {}, filterItem
       onCancel={() => batchCallbackFn(false)}
       footer={[
         <Button key="reset" onClick={resetForm}>
-          {t('reset')}
+          {t('common:reset')}
         </Button>,
         <Button key="cancel" onClick={() => batchCallbackFn(false)}>
-          {t('cancel')}
+          {t('common:cancel')}
         </Button>,
         <Button key="ok" type="primary" onClick={submitFn}>
-          {t('search.label')}
+          {t('common:search.label')}
         </Button>,
       ]}
     >
@@ -61,7 +61,7 @@ const BatchSearchModal = ({ t, visible, batchCallbackFn, params = {}, filterItem
           {filterItems.map((item) => (
             <Tabs.TabPane key={item.key} tab={<span style={{ width: '100px' }}>{item.label}</span>}>
               <Form.Item name={item.key} className="full-width">
-                <Input.TextArea placeholder={t('search.batch_tip')} rows={8} />
+                <Input.TextArea placeholder={t('common:search.batch_tip')} rows={8} />
               </Form.Item>
             </Tabs.TabPane>
           ))}

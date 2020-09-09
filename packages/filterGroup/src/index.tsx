@@ -86,8 +86,8 @@ const FilteredItems = ({ t, params, handleParam }) => {
     <FiltersReview>
       <span className="label mr-5">
         <FilterOutlined className="mr-5" />
-        {t('filter_conditions')}
-        {t('colon')}
+        {t('common:filter_conditions')}
+        {t('common:colon')}
       </span>
 
       {Object.keys(params).map((key) => {
@@ -103,7 +103,7 @@ const FilteredItems = ({ t, params, handleParam }) => {
       })}
 
       <Button size="small" className="fz-12" type="dashed" onClick={() => handleParam()}>
-        {t('reset')}
+        {t('common:reset')}
       </Button>
     </FiltersReview>
   );
@@ -294,7 +294,7 @@ const FilterGroup = ({
               className="mr-10 fz-12"
               onClick={() => setBacthSearchModalVisible(true)}
             >
-              {t('search.batch')}
+              {t('common:search.batch')}
             </Button>
           )}
           {extraActions}
@@ -306,7 +306,7 @@ const FilterGroup = ({
           <Button className="mr-10" onClick={refreshCallback} icon={<FullscreenOutlined />}></Button>
         </Tooltip> */}
         {refreshCallback && (
-          <Tooltip key="refresh" title={t('refresh')} className="mr-10">
+          <Tooltip key="refresh" title={t('common:refresh')} className="mr-10">
             <Button className="mr-10" onClick={refreshCallback} icon={<RedoOutlined />}></Button>
           </Tooltip>
         )}
@@ -319,7 +319,7 @@ const FilterGroup = ({
               setSeniorSearchFormState(!seniorSearchFormState);
             }}
           >
-            {t('search.senior')}
+            {t('common:search.senior')}
             <DoubleRightOutlined />
           </Button>
         )}
@@ -373,16 +373,16 @@ const SeniorSearchForm = ({ t, initialValues, items, seniorCallbackFn, visible }
 
   return (
     <Drawer
-      title={t('search.senior')}
+      title={t('common:search.senior')}
       visible={visible}
       width={560}
       onClose={closeCallback}
       footer={
         <div className="t-right">
           <Button type="primary" onClick={formSubmit} className="mr-10">
-            {t('search.label')}
+            {t('common:search.label')}
           </Button>
-          <Button onClick={resetForm}>{t('reset')}</Button>
+          <Button onClick={resetForm}>{t('common:reset')}</Button>
         </div>
       }
     >
