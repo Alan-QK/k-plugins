@@ -38,14 +38,8 @@ module.exports = {
       amd: 'react',
       root: 'React',
     },
-    'antd': {
-      commonjs: 'antd',
-      commonjs2: 'antd',
-      amd: 'antd',
-      root: 'Antd',
-    },
     "@gui/muilt-input": "@gui/muilt-input",
-    "less": "less"
+    "moment": "moment"
   },
   optimization: {
     minimizer: [new UglifyJsPlugin()],
