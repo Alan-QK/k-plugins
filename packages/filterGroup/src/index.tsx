@@ -1,276 +1,502 @@
-import React, { useState, useRef, useEffect, CSSProperties } from 'react';
+import React, { useState, useEffect, useMemo, createRef, CSSProperties } from 'react';
+import { isString, isUndefined, isNumber, every, isArray, has, find, omit } from 'lodash';
+import moment, { isMoment } from 'moment';
 
-const wrapperStyle = (row): CSSProperties => ({
-  position: 'relative',
-  border: '1px solid #ddd',
-  height: `calc(${row}em + 2em)`,
-  padding: '0.7em',
-  overflowX: 'hidden',
-  overflowY: 'auto',
-});
+import { Form, Button, Select, Tooltip, Row, Col, Drawer } from 'antd';
+import {
+  RedoOutlined,
+  FilterOutlined,
+  SearchOutlined,
+  CloseOutlined,
+  DoubleRightOutlined,
+  QuestionCircleOutlined
+} from '@ant-design/icons';
+import BatchSearchModal from './BatchSearchModal';
 
-const basicItemStyle: CSSProperties = {
-  display: 'inline-block',
-  padding: '0px 0.7em',
-  lineHeight: '20px',
-  fontSize: '12px',
-  color: '#999',
-  border: '1px solid #d9d9d9',
-};
-
-const sItemStyle: CSSProperties = {
-  ...basicItemStyle,
-  marginRight: '5px',
-  background: '#fafafa',
-  marginBottom: '5px',
-  maxWidth: '100%',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  verticalAlign: 'top',
-  whiteSpace: 'pre-wrap',
-};
-
-const inputStyle: CSSProperties = {
-  border: 'none',
-  outline: 'none',
-  fontSize: '12px',
-  lineHeight: '22px',
-  verticalAlign: 'top',
-  background: 'transparent',
-  maxHeight: '5em',
-  width: '-webkit-fill-available',
-};
-
-const placeholderStyle: CSSProperties = {
-  position: 'absolute',
-  color: 'rgba(176, 176, 176, 0.8)',
-  fontWeight: 100,
-};
-
-// const errorStyle = {
-//   color: 'rgb(255, 85, 0)',
-//   borderColor: 'red',
-// };
-
-interface MuiltInputProps {
-  value?;
-  onChange?;
-  row?: number;
-  placeholder?;
-  splitSpot?;
-  childValid?;
+export interface FilterItemProp {
+  key: string;
+  label: string;
+  type?: string;
+  keys?;
+  multiple?: boolean;
+  placeholder?: string;
+  moreOptions?;
+  options?;
+  style?;
 }
 
-const MuiltInput = ({
-  value,
-  onChange,
-  row = 6,
-  placeholder,
-  splitSpot,
-  childValid = () => true,
-}: MuiltInputProps) => {
-  const inputRef: any = useRef();
-  const [words, setWords] = useState<Array<string>>([]);
-  const [inputVal, setInputVal] = useState<string>();
+interface FilterGroupProps {
+  t?;
+  items: Array<FilterItemProp>;
+  callbackFn?;
+  extraActions?;
+  extra2Actions?;
+  ref?;
+  refreshCallback?;
+  defaultVal?;
+  showSeniorSearch?;
+  mref?;
+  showBatchSearch?;
+  handleVals?;
+}
 
-  const [editInputValue, setEditInputValue] = useState('');
-  const [editInputVisible, setEditInputVisible] = useState<{ [propname: number]: boolean }>({
-    '-1': false,
-  });
+import { RenderComp } from '@gui/dynamic-form';
 
-  useEffect(() => {
-    if (value) {
-      setWords(value);
+function renderVal(param) {
+  const { val, moreOptions, options, type } = param;
+  if (options?.length && type === 'select') {
+    let display = options.find((i) => i.value === val)?.label || val;
+    return display;
+  }
+  if (isString(val) || isNumber(val)) return val;
+
+  if (isArray(val)) {
+    if (every(val, isMoment)) {
+      return val.map((v) => v.format(moreOptions?.format || 'YYYY-MM-DD')).join('/');
+    } else {
+      return val.join('/');
     }
-  }, [value]);
-
-  function resetEditInputState(idx?) {
-    setEditInputVisible({ [idx > -1 ? idx : -1]: false });
-    setEditInputValue('');
   }
 
-  const focusTarget = (e) => {
-    const tarKey = e.target?.dataset?.key;
-    if (tarKey === 'muilt-input-wrapper' || tarKey === 'muilt-input-placeholder') {
-      inputRef?.current.focus();
+  return '---';
+}
 
-      if (editInputVisible) {
-        resetEditInputState();
-      }
-    }
-  };
+function isEmptyValsObj(obj = {}, items) {
+  const newObj = Object.keys(obj).reduce((o, k) => {
+    if (!!obj[k] || obj[k] === 0) {
+      const item = items.find((i) => i.key === k) ?? {};
+      return {
+        ...o,
+        [k]: {
+          val: obj[k],
+          ...item,
+        },
+      };
+    } else return o;
+  }, {});
 
-  function getSplitedVals(val) {
-    if (!splitSpot) return [val];
+  if (!Object.keys(newObj).length) return false;
+  return newObj;
+}
 
-    const regStr = new RegExp(`[${splitSpot}]`, 'g');
-    const hasSplitSpot = regStr.test(val);
-    if (!hasSplitSpot) return [val];
-
-    const newVal = val.replace(regStr, ';').split(';');
-    return newVal.map((i) => i.trim()).filter((i) => i);
-  }
-
-  function updateVal(type, val?, index?) {
-    let nextVals = words?.slice();
-    switch (type) {
-      case 'new':
-        // val 为新值
-        const nextVal = val?.trim();
-        if (nextVal && words?.indexOf(nextVal) === -1) {
-          nextVals = Array.from(new Set([...nextVals, ...getSplitedVals(val)]));
-        } else {
-          return;
-        }
-        break;
-      case 'delete':
-        // val 为数组下标
-        if (!nextVals.length) return;
-        nextVals.splice(val > -1 ? val : nextVals.length - 1, 1);
-        break;
-      case 'edit':
-        if (!val) {
-          // val 为空等同删除操作
-          nextVals.splice(index, 1);
-        } else if (val !== words[index]) {
-          const prevGroup = nextVals.slice(0, index);
-          const afterGroup = nextVals.slice(index + 1, nextVals.length);
-          nextVals = Array.from(new Set([...prevGroup, ...getSplitedVals(val), ...afterGroup]));
-          resetEditInputState(index);
-        } else {
-          resetEditInputState(index);
-          return;
-        }
-      default:
-        // console.error('Some thing is Error.')
-        break;
-    }
-
-    setWords(nextVals);
-    onChange(nextVals);
-    setInputVal('');
-  }
-
-  const handleEnterKey = (e, idx?) => {
-    if (e.nativeEvent.keyCode === 13) {
-      //e.nativeEvent获取原生的事件对像
-      updateVal(idx > -1 ? 'edit' : 'new', e.target.value, idx);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.nativeEvent.keyCode === 8 && !e.target.value && words?.length) {
-      updateVal('delete');
-    }
-  };
-  const blurInput = (e, idx?) => {
-    updateVal(idx > -1 ? 'edit' : 'new', e.target.value, idx);
-  };
-
-  const toggleState = (idx) => {
-    words && setEditInputValue(words[idx]);
-    setEditInputVisible({ [idx]: true });
-  };
-
+// 渲染已有的过滤条件
+const FilteredItems = ({ t, params, handleParam }) => {
   return (
-    <div
-      className="wrapper"
-      data-key="muilt-input-wrapper"
-      style={{ ...wrapperStyle(row) }}
-      onClick={focusTarget}
-      onFocus={focusTarget}
-    >
-      {!words?.length && !inputVal && (
-        <span
-          style={placeholderStyle}
-          data-key="muilt-input-placeholder"
-          onClick={focusTarget}
-          onFocus={focusTarget}
-        >
-          {placeholder}
-        </span>
-      )}
+    <div className="filters-review">
+      <span className="label mr-5">
+        <FilterOutlined className="mr-5" />
+        {t('filter_conditions')}
+        {t('colon')}
+      </span>
 
-      {words?.map((i, idx) => {
-        if (editInputVisible[idx]) {
-          return (
-            <input
-              key={i}
-              style={{
-                ...inputStyle,
-                ...basicItemStyle,
-                marginBottom: '5px',
-                width: 'auto',
-                marginRight: '5px',
-              }}
-              value={editInputValue}
-              onChange={(e) => {
-                setEditInputValue(e.target.value);
-              }}
-              onBlur={(e) => blurInput(e, idx)}
-              onKeyPress={(e) => handleEnterKey(e, idx)}
-            />
-          );
-        }
+      {Object.keys(params).map((key) => {
+        if (!params[key]?.label) return null;
         return (
-          <span
-            key={i}
-            className="s-item"
-            style={{
-              ...sItemStyle,
-              borderColor: !childValid(i) ? 'red' : '#d9d9d9',
-            }}
-          >
-            <span
-              onDoubleClick={() => toggleState(idx)}
-              style={{
-                display: 'inline-block',
-                overflow: 'hidden',
-                whiteSpace: 'pre-wrap',
-                width: 'calc(100% - 13px)',
-                verticalAlign: 'top',
-                color: !childValid(i) ? 'red' : '#999',
-              }}
-            >
-              {/* {renderItem(i)} */}
-              {i}
+          <span className="tag-item" key={key}>
+            <span onClick={() => handleParam(key)}>
+              {params[key]?.label ?? key}: <span className="val">{renderVal(params[key])}</span>
             </span>
-
-            <span
-              role="img"
-              aria-label="close"
-              onClick={() => updateVal('delete', idx)}
-              className="anticon anticon-close ant-tag-close-icon"
-            >
-              <svg
-                viewBox="64 64 896 896"
-                focusable="false"
-                data-icon="close"
-                width="1em"
-                height="1em"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path>
-              </svg>
-            </span>
+            <CloseOutlined className="item-icon" onClick={() => handleParam(key, true)} />
           </span>
         );
       })}
 
-      <input
-        ref={inputRef}
-        value={inputVal}
-        style={inputStyle}
-        onChange={(e) => {
-          setInputVal(e.target.value);
-        }}
-        onBlur={blurInput}
-        onKeyPress={handleEnterKey}
-        onKeyDown={handleKeyDown}
-      />
+      <Button size="small" className="fz-12" type="dashed" onClick={() => handleParam()}>
+        {t('reset')}
+      </Button>
+
+      {/* @ts-ignore */}
+      <style jsx>{`
+        .filters-review {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          background: #eee;
+          color: #999;
+          margin-bottom: 10px;
+          padding: 0.5em;
+          font-size: 12px;
+        }
+
+        .tag-item {
+          border: 1px solid #ddd;
+          padding: 2px 5px;
+          background: #fefefe;
+          margin-right: 1em;
+        }
+
+        .tag-item:hover {
+          color: #36cfc9;
+        }
+
+        :global(.tag-item .item-icon) {
+          cursor: pointer;
+          margin-left: 5px;
+        }
+        :global(.tag-item .item-icon:hover) {
+          color: red;
+        }
+
+        .val {
+          display: inline-block;
+          max-width: 300px;
+          overflow: hidden;
+          vertical-align: bottom;
+          text-overflow: ellipsis;
+        }
+      `}</style>
     </div>
   );
 };
 
-export default MuiltInput;
+const FilterGroup = ({
+  t,
+  items = [],
+  callbackFn = () => { },
+  extraActions,
+  extra2Actions,
+  refreshCallback,
+  showSeniorSearch,
+  handleVals,
+  defaultVal = {},
+  showBatchSearch,
+}: FilterGroupProps & any) => {
+  const thisRef = createRef<HTMLDivElement>();
+  // 初始化过滤条件
+  const initVal = Object.keys(defaultVal).reduce((obj, key) => {
+    if (find(items, ['key', key]) && defaultVal[key]) {
+      return { ...obj, [key]: defaultVal[key] };
+    } else {
+      return obj;
+    }
+  }, {});
+
+  const [form] = Form.useForm();
+  const initParam = items[0]?.key;
+  const [currentFilter, setCurrentFilter] = useState<string>(initParam);
+  const [params, setParams] = useState({ ...initVal });
+  const [seniorSearchFormState, setSeniorSearchFormState] = useState(false);
+  const [seniorInitVal, setSeniorInitVal] = useState({ ...initVal });
+  const [batchSearchModalVisible, setBacthSearchModalVisible] = useState(false);
+
+  useEffect(() => {
+    setSeniorInitVal({ ...params });
+    let finalParams = Object.assign(params);
+
+    //判别搜索参数中有没有日期数组
+    if (has(finalParams, 'date') && every(finalParams['date'], isMoment) && finalParams['date']) {
+      const filterItem = items.find((item) => item.key === 'date');
+      finalParams = {
+        ...finalParams,
+        [filterItem?.keys[0]]: moment(finalParams['date'][0]).format('X'),
+        [filterItem?.keys[1]]: moment(finalParams['date'][1]).format('X'),
+      };
+
+      delete finalParams.date;
+    }
+
+    finalParams = Object.keys(finalParams).reduce((newObj, key) => {
+      if (!isString(finalParams[key])) return { ...newObj, [key]: finalParams[key] };
+      return { ...newObj, [key]: finalParams[key].trim() };
+    }, {});
+
+    let nextParams = Object.assign(finalParams);
+    if (handleVals) {
+      nextParams = handleVals(finalParams);
+    }
+
+    callbackFn(nextParams, thisRef.current?.offsetHeight);
+  }, [params]);
+
+  // 表单提交
+  const submitFn = (values: { [param: string]: any }) => {
+    if (isUndefined(values[currentFilter]) || values[currentFilter] === '') return false;
+    setParams({
+      ...params,
+      ...values,
+    });
+  };
+
+  // 处理搜索记录的点击事件
+  // 普通点击 & 删除过滤条件
+  const handleParam = (key, isDel) => {
+    if (!key) {
+      setCurrentFilter(initParam);
+      form.setFieldsValue({
+        [initParam]: undefined,
+      });
+      setParams({});
+      return;
+    }
+
+    setCurrentFilter(key);
+
+    if (isDel) {
+      const nextParams = Object.assign(params);
+      delete nextParams[key];
+      // 删除的为当前搜索条件时重置表单
+      form.setFieldsValue({
+        [key]: undefined,
+      });
+
+      setParams({ ...nextParams });
+    } else {
+      setCurrentFilter(key);
+    }
+  };
+
+  const seniorSearch = (isChangedParams, vals) => {
+    isChangedParams && setParams(vals);
+    setSeniorSearchFormState(false);
+  };
+
+  // 批量搜索
+  function batchSearch(flag, data) {
+    if (flag) {
+      setParams({ ...params, ...data });
+    }
+    setBacthSearchModalVisible(false);
+  }
+
+  // 表单元素
+  const memoChildTemp = useMemo(() => {
+    const currentFormItem = items.find((o) => o.key === currentFilter);
+    if (!currentFormItem) return null;
+
+    return (
+      <RenderComp
+        t={t}
+        item={{ ...currentFormItem, style: { ...currentFormItem.style, width: 240 } }}
+      />
+    );
+  }, [currentFilter, items, t]);
+
+  const renderSeniorSearchForm = useMemo(
+    () => (
+      <SeniorSearchForm
+        t={t}
+        visible={seniorSearchFormState}
+        initialValues={seniorInitVal}
+        items={items}
+        seniorCallbackFn={seniorSearch}
+      />
+    ),
+    [items, seniorInitVal, seniorSearchFormState]
+  );
+
+  const renderFilterItems = useMemo(() => {
+    const renderParams = isEmptyValsObj(params, items);
+    if (!renderParams) return null;
+    return <FilteredItems t={t} params={renderParams} handleParam={handleParam} />;
+  }, [params, items, t]);
+
+  return (
+    <div className="top-search" ref={thisRef}>
+      <div className="pull-left d-flex">
+        {!!items.length && (
+          <Form form={form} onFinish={submitFn} className="search-form">
+            {items.length > 1 && (
+              <Form.Item>
+                <Select
+                  style={{ width: 110, fontSize: 12 }}
+                  defaultValue={items[0].key}
+                  value={currentFilter}
+                  onChange={(val) => {
+                    setCurrentFilter(val);
+                  }}
+                >
+                  {items?.map((i) => (
+                    <Select.Option key={i.key} value={i.key} className="fz-12">
+                      {i.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
+            <Form.Item name={currentFilter} className={items!.length > 1 ? 'mult' : ''}>
+              {memoChildTemp}
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ padding: '0 0.8em', marginRight: 10 }}
+              >
+                <SearchOutlined />
+              </Button>
+            </Form.Item>
+          </Form>
+        )}
+        <div className="mb-10 d-flex">
+          {showBatchSearch && (
+            <Button
+              key="batchSearch"
+              className="mr-10 fz-12"
+              onClick={() => setBacthSearchModalVisible(true)}
+            >
+              {t('search.batch')}
+            </Button>
+          )}
+          {extraActions}
+        </div>
+      </div>
+
+      <div className="pull-right mb-10">
+        {/* <Tooltip key="expand" title={'全页面显示'} className="mr-10">
+          <Button className="mr-10" onClick={refreshCallback} icon={<FullscreenOutlined />}></Button>
+        </Tooltip> */}
+        {refreshCallback && (
+          <Tooltip key="refresh" title={t('refresh')} className="mr-10">
+            <Button className="mr-10" onClick={refreshCallback} icon={<RedoOutlined />}></Button>
+          </Tooltip>
+        )}
+        {extra2Actions}
+        {showSeniorSearch && (
+          <Button
+            type="link"
+            className="fz-12"
+            onClick={() => {
+              setSeniorSearchFormState(!seniorSearchFormState);
+            }}
+          >
+            {t('search.senior')}
+            <DoubleRightOutlined />
+          </Button>
+        )}
+      </div>
+
+      {/* 已有的过滤条件 */}
+      {renderFilterItems}
+
+      {renderSeniorSearchForm}
+
+      <BatchSearchModal
+        t={t}
+        visible={batchSearchModalVisible}
+        batchCallbackFn={batchSearch}
+        params={params}
+        filterItems={items.filter((i) => i.multiple)}
+      />
+      {/* @ts-ignore */}
+      <style jsx>{`
+        .top-search {
+          position: relative;
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .pull-left {
+          flex-flow: row wrap;
+          align-items: center;
+        }
+      `}</style>
+      {/* @ts-ignore */}
+      <style jsx global>{`
+        .search-form {
+          display: flex;
+          margin-bottom: 10px;
+        }
+
+        .search-form .ant-form-item {
+          margin-bottom: 0;
+        }
+
+        .search-form [class^='ant-'] {
+          border-radius: 0 !important;
+        }
+
+        .ant-form-item.mult [class^='ant-'] {
+          border-left: none;
+        }
+
+        .top-search .ant-btn,
+        .top-search .ant-btn .iconfont {
+          font-size: 13px;
+        }
+        .top-search .ant-btn-icon-only {
+          font-size: 14px;
+        }
+        .top-search .ant-btn:not(.ant-btn-icon-only) {
+          padding: 0px 10px;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default FilterGroup;
+
+// 高级搜索表单
+const SeniorSearchForm = ({ t, initialValues, items, seniorCallbackFn, visible }) => {
+  const [form] = Form.useForm();
+  const formSubmit = () => {
+    const values = form.getFieldsValue();
+    seniorCallbackFn(
+      true,
+      omit(
+        values,
+        Object.keys(values).filter((k) => isUndefined(values[k]))
+      )
+    );
+  };
+
+  const resetForm = () => {
+    form.resetFields();
+  };
+
+  const closeCallback = () => {
+    seniorCallbackFn(false, {});
+  };
+
+  useEffect(() => {
+    if (visible) {
+      form.setFieldsValue(initialValues);
+    }
+  }, [visible]);
+
+  return (
+    <Drawer
+      title={t('search.senior')}
+      visible={visible}
+      width={560}
+      onClose={closeCallback}
+      footer={
+        <div className="t-right">
+          <Button type="primary" onClick={formSubmit} className="mr-10">
+            {t('search.label')}
+          </Button>
+          <Button onClick={resetForm}>{t('reset')}</Button>
+        </div>
+      }
+    >
+      <Form form={form} layout="vertical">
+        <Row gutter={24}>
+          {items.map((item) => (
+            <Col key={item.key} lg={12} md={12}>
+              <Form.Item
+                name={item.key}
+                label={
+                  <span>
+                    {item.label}
+                    {item.multiple && (
+                      <Tooltip
+                        placement="right"
+                        title={<span className="fz-12">{t('search.senior-tip')}</span>}
+                      >
+                        <QuestionCircleOutlined className="ml-10 fz-12 c-warn" />
+                      </Tooltip>
+                    )}
+                  </span>
+                }
+              >
+                {<RenderComp t={t} isSeniorForm item={{ ...item, style: { width: '100%' } }} />}
+              </Form.Item>
+            </Col>
+          ))}
+        </Row>
+      </Form>
+    </Drawer>
+  );
+};
