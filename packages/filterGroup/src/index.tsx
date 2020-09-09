@@ -226,7 +226,13 @@ const FilterGroup = ({
     return (
       <RenderComp
         t={t}
-        item={{ ...currentFormItem, style: { ...currentFormItem.style, width: 240 } }}
+        item={{
+          ...currentFormItem,
+          style: {
+            // ...(currentFormItem.style || {}),
+            width: 240
+          }
+        }}
       />
     );
   }, [currentFilter, items, t]);
@@ -254,7 +260,7 @@ const FilterGroup = ({
     <TopSearch ref={thisRef}>
       <div className="pull-left d-flex">
         {!!items.length && (
-          <Form form={form} onFinish={submitFn}>
+          <SearchForm form={form} onFinish={submitFn}>
             {items.length > 1 && (
               <Form.Item>
                 <Select
@@ -285,7 +291,7 @@ const FilterGroup = ({
                 <SearchOutlined />
               </Button>
             </Form.Item>
-          </Form>
+          </SearchForm>
         )}
         <div className="mb-10 d-flex">
           {showBatchSearch && (
