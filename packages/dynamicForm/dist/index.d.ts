@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import 'antd/es/form/style';
 export declare const formItemLayout: {
     labelCol: {
         xs: {

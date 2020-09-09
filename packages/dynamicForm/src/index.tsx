@@ -12,6 +12,8 @@ import {
   DatePicker,
 } from 'antd';
 
+import 'antd/es/form/style'
+
 const { RangePicker } = DatePicker;
 import AREANO_LIST from './areanoList';
 import MuiltInput from '@gui/muilt-input';
@@ -93,7 +95,6 @@ const prefixSelector = (key) => (
 );
 
 export const RenderComp = ({ t, item, value, onChange, isSeniorForm }: ChildTempProps) => {
-  console.log({ item })
   const { type, label, options, placeholder, style = {}, moreOptions = {}, multiple } = item || {};
   switch (type) {
     case 'select':
