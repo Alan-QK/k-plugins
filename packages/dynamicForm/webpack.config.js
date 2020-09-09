@@ -44,7 +44,8 @@ module.exports = {
       amd: 'antd',
       root: 'Antd',
     },
-    "@gui/muilt-input": "@gui/muilt-input"
+    "@gui/muilt-input": "@gui/muilt-input",
+    "less": "less"
   },
   optimization: {
     minimizer: [new UglifyJsPlugin()],
