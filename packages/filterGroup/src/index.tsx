@@ -305,7 +305,7 @@ const FilterGroup = ({
         item={{
           ...currentFormItem,
           style: {
-            // ...(currentFormItem.style || {}),
+            ...(currentFormItem.style || {}),
             width: 240
           }
         }}
