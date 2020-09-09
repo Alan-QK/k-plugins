@@ -11,11 +11,11 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
-      },
+      }
     ]
   },
   resolve: {
-    extensions: ['.tsx']
+    extensions: ['.tsx', '.js', '.ts', '.jsx']
   },
   externals: {    //避免打包
     'react': {

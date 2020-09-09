@@ -41,5 +41,10 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-jsx": "^3.3.0"
+  },
+  "babel": {
+    "plugins": [
+      "styled-jsx/babel"
+    ]
   }
 }
