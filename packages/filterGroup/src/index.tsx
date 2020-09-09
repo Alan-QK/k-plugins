@@ -254,7 +254,7 @@ const FilterGroup = ({
     <TopSearch ref={thisRef}>
       <div className="pull-left d-flex">
         {!!items.length && (
-          <SearchForm form={form} onFinish={submitFn} className="search-form">
+          <Form form={form} onFinish={submitFn}>
             {items.length > 1 && (
               <Form.Item>
                 <Select
@@ -285,7 +285,7 @@ const FilterGroup = ({
                 <SearchOutlined />
               </Button>
             </Form.Item>
-          </SearchForm>
+          </Form>
         )}
         <div className="mb-10 d-flex">
           {showBatchSearch && (

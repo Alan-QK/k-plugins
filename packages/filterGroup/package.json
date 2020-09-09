@@ -14,7 +14,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@gui/dynamic-form": "^0.1.5",
-    "antd": "^4.6.3",
+    "antd": "^4.6.2",
     "cross-env": "^7.0.2",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
@@ -35,7 +35,7 @@
   "peerDependencies": {
     "@ant-design/icons": "^4.2.2",
     "@gui/dynamic-form": "^0.1.5",
-    "antd": "^4.6.3",
+    "antd": "^4.6.2",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "react": "^16.13.1",
