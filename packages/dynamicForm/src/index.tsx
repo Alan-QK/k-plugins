@@ -1,5 +1,4 @@
 import React from 'react';
-// import { withTranslation } from '@/i18n/index';
 import {
   Form,
   Row,
@@ -162,7 +161,6 @@ export const RenderComp = ({ t, item, value, onChange, isSeniorForm }: ChildTemp
         <InputNumber
           value={value}
           onChange={onChange}
-          className="full-w"
           placeholder={label}
           {...moreOptions}
         />
@@ -220,16 +218,10 @@ export const RenderComp = ({ t, item, value, onChange, isSeniorForm }: ChildTemp
             addonBefore={showPrefixSelector ? prefixSelector(prefixKey) : null}
             value={value}
             onChange={onChange}
-            className="input-phone"
             autoComplete="off"
             placeholder={t('common:placeholder.input', { name: label })}
             {...otherOptions}
           />
-          {/* <style jsx global>{`
-            .ant-select-dropdown.phone-pre {
-              width: 120px !important;
-            }
-          `}</style> */}
         </>
       );
     case 'muilt-input':
@@ -283,7 +275,7 @@ export const RenderFormBody = (t, formItems, defaultVal?) => (
       ) : (
           <Form.Item
             key={item.key}
-            className="mb-10"
+            style={{ marginBottom: 10 }}
             label={item.label}
             colon={false}
             name={item.key}
@@ -339,7 +331,6 @@ const DynamicForm = (props: Props & any) => {
   return (
     <Form
       form={form}
-      className="dynamic-form"
       style={{
         width: 400,
         margin: 'auto'
@@ -349,8 +340,8 @@ const DynamicForm = (props: Props & any) => {
       initialValues={defaultVal}
     >
       {RenderFormBody(t, formItems, defaultVal)}
-      <Form.Item wrapperCol={{ offset: 7 }} style={{marginTop: '2em'}}>
-        <Button type={subBtn.type} style={{marginRight: '24px'}} htmlType="submit">
+      <Form.Item wrapperCol={{ offset: 7 }} style={{ marginTop: '2em' }}>
+        <Button type={subBtn.type} style={{ marginRight: '24px' }} htmlType="submit">
           {subBtn.label}
         </Button>
         {!!cancelBtn && <a onClick={cancelFn}>{cancelBtn.label}</a>}
