@@ -12,6 +12,7 @@ import {
   QuestionCircleOutlined
 } from '@ant-design/icons';
 import BatchSearchModal from './BatchSearchModal';
+import { TopSearch, SearchForm } from "./styles";
 
 export interface FilterItemProp {
   key: string;
@@ -290,10 +291,10 @@ const FilterGroup = ({
   }, [params, items, t]);
 
   return (
-    <div className="top-search" ref={thisRef}>
+    <TopSearch ref={thisRef}>
       <div className="pull-left d-flex">
         {!!items.length && (
-          <Form form={form} onFinish={submitFn} className="search-form">
+          <SearchForm form={form} onFinish={submitFn} className="search-form">
             {items.length > 1 && (
               <Form.Item>
                 <Select
@@ -324,7 +325,7 @@ const FilterGroup = ({
                 <SearchOutlined />
               </Button>
             </Form.Item>
-          </Form>
+          </SearchForm>
         )}
         <div className="mb-10 d-flex">
           {showBatchSearch && (
@@ -386,16 +387,11 @@ const FilterGroup = ({
           align-items: center;
         }
 
-        .pull-left {
-          flex-flow: row wrap;
-          align-items: center;
-        }
+        
       `}</style>
       
       <style jsx global>{`
         .search-form {
-          display: flex;
-          margin-bottom: 10px;
         }
 
         .search-form .ant-form-item {
@@ -410,18 +406,9 @@ const FilterGroup = ({
           border-left: none;
         }
 
-        .top-search .ant-btn,
-        .top-search .ant-btn .iconfont {
-          font-size: 13px;
-        }
-        .top-search .ant-btn-icon-only {
-          font-size: 14px;
-        }
-        .top-search .ant-btn:not(.ant-btn-icon-only) {
-          padding: 0px 10px;
-        }
+        
       `}</style>
-    </div>
+    </TopSearch>
   );
 };
 

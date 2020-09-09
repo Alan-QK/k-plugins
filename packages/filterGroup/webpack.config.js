@@ -39,6 +39,7 @@ module.exports = {
     },
     '@ant-design/icons': '@ant-design/icons',
     '@gui/dynamic-form': '@gui/dynamic-form',
+    'styled-components': 'styled-components'
   },
   optimization: {
     minimizer: [new UglifyJsPlugin()],

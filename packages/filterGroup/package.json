@@ -20,7 +20,7 @@
     "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "styled-jsx": "^3.3.0"
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.49",
@@ -40,11 +40,6 @@
     "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "styled-jsx": "^3.3.0"
-  },
-  "babel": {
-    "plugins": [
-      "styled-jsx/babel"
-    ]
+    "styled-components": "^5.2.0"
   }
 }
