@@ -12,7 +12,7 @@ import {
   QuestionCircleOutlined
 } from '@ant-design/icons';
 import BatchSearchModal from './BatchSearchModal';
-import { TopSearch, SearchForm } from "./styles";
+import { TopSearch, SearchForm, FiltersReview } from "./styles";
 
 export interface FilterItemProp {
   key: string;
@@ -83,7 +83,7 @@ function isEmptyValsObj(obj = {}, items) {
 // 渲染已有的过滤条件
 const FilteredItems = ({ t, params, handleParam }) => {
   return (
-    <div className="filters-review">
+    <FiltersReview>
       <span className="label mr-5">
         <FilterOutlined className="mr-5" />
         {t('filter_conditions')}
@@ -105,47 +105,7 @@ const FilteredItems = ({ t, params, handleParam }) => {
       <Button size="small" className="fz-12" type="dashed" onClick={() => handleParam()}>
         {t('reset')}
       </Button>
-
-      <style jsx>{`
-        .filters-review {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          background: #eee;
-          color: #999;
-          margin-bottom: 10px;
-          padding: 0.5em;
-          font-size: 12px;
-        }
-
-        .tag-item {
-          border: 1px solid #ddd;
-          padding: 2px 5px;
-          background: #fefefe;
-          margin-right: 1em;
-        }
-
-        .tag-item:hover {
-          color: #36cfc9;
-        }
-
-        :global(.tag-item .item-icon) {
-          cursor: pointer;
-          margin-left: 5px;
-        }
-        :global(.tag-item .item-icon:hover) {
-          color: red;
-        }
-
-        .val {
-          display: inline-block;
-          max-width: 300px;
-          overflow: hidden;
-          vertical-align: bottom;
-          text-overflow: ellipsis;
-        }
-      `}</style>
-    </div>
+    </FiltersReview>
   );
 };
 
@@ -377,37 +337,6 @@ const FilterGroup = ({
         params={params}
         filterItems={items.filter((i) => i.multiple)}
       />
-      
-      <style jsx>{`
-        .top-search {
-          position: relative;
-          display: flex;
-          flex-flow: row wrap;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        
-      `}</style>
-      
-      <style jsx global>{`
-        .search-form {
-        }
-
-        .search-form .ant-form-item {
-          margin-bottom: 0;
-        }
-
-        .search-form [class^='ant-'] {
-          border-radius: 0 !important;
-        }
-
-        .ant-form-item.mult [class^='ant-'] {
-          border-left: none;
-        }
-
-        
-      `}</style>
     </TopSearch>
   );
 };
