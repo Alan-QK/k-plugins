@@ -4,6 +4,7 @@ export declare const defaultOptions: {
         Accept: string;
     };
 };
+export declare const interceptRequest: (handleConfig: any) => void;
 export declare const interceptResponse: ({ handleUnauthorized, handleSuccess, handleError }: {
     handleUnauthorized: any;
     handleSuccess: any;

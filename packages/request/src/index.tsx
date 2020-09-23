@@ -57,6 +57,19 @@ function _transformUrl(origin_url, data = {}, rmEnd) {
   };
 }
 
+
+export const interceptRequest = (handleConfig) => {
+  // Global response handler
+  axios.interceptors.response.use(
+    function(config) {
+      return handleConfig?.(config);
+    },
+    function(error) {
+      return Promise.reject(error);
+    }
+  );
+};
+
 export const interceptResponse = ({ handleUnauthorized, handleSuccess, handleError }) => {
   // Global response handler
   axios.interceptors.response.use(handleSuccess, function onError(error) {
