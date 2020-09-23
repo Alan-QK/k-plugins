@@ -60,7 +60,7 @@ function _transformUrl(origin_url, data = {}, rmEnd) {
 
 export const interceptRequest = (handleConfig) => {
   // Global response handler
-  axios.interceptors.response.use(
+  axios.interceptors.request.use(
     function(config) {
       return handleConfig?.(config);
     },
