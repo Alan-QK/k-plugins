@@ -61,10 +61,10 @@ function _transformUrl(origin_url, data = {}, rmEnd) {
 export const interceptRequest = (handleConfig) => {
   // Global response handler
   axios.interceptors.request.use(
-    function(config) {
+    function (config) {
       return handleConfig?.(config);
     },
-    function(error) {
+    function (error) {
       return Promise.reject(error);
     }
   );
@@ -153,10 +153,11 @@ export const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => 
 export const useRequest = (url, opts = {}) => {
   const {
     onData = () => { },
+    onError = () => { },
     axiosOptions = {},
     handleResponseData = data => data,
     ...useAxiosOptions
-  }:any = opts;
+  }: any = opts;
   const [data, setData] = useState(null);
   const defaultOpts = {
     url: url,
@@ -171,6 +172,8 @@ export const useRequest = (url, opts = {}) => {
         const result = _data ? handleResponseData(_data) : _data;
         setData(result);
         if (result) onData(result);
+      } else {
+        onError?.(error);
       }
     }
   };
