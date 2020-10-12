@@ -133,7 +133,7 @@ export const patch = (apiUrl, params, options = defaultOptions, rmEnd = false) =
     ...{ ...defaultOptions, ...options },
     url,
     method: 'patch',
-    data: data
+    data
   });
 };
 
@@ -146,7 +146,7 @@ export const del = (apiUrl, params, options = defaultOptions, rmEnd = false) => 
     ...{ ...defaultOptions, ...options },
     url,
     method: 'delete',
-    params: data
+    data
   });
 };
 
