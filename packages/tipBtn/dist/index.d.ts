@@ -1,5 +1,4 @@
 /// <reference types="react" />
-import './style.css';
 interface Props {
     title?: string;
     titleExtra?: any;
