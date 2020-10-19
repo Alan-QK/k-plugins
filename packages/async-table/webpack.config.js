@@ -28,6 +28,12 @@ module.exports = {
       amd: 'react',
       root: 'React',
     },
+    'lodash': {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: 'lodash',
+      root: 'lodash',
+    },
     'antd': {
       commonjs: 'antd',
       commonjs2: 'antd',
