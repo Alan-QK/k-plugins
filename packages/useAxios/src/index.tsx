@@ -84,6 +84,7 @@ const useAxios = ({
   }, [innerTrigger, outerTrigger]);
 
   return {
+    ...initialResponse,
     ...results,
     // @deprecated
     query: () => {

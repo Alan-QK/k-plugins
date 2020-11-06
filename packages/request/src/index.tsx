@@ -159,6 +159,12 @@ export const useRequest = (url, opts = {}) => {
     ...useAxiosOptions
   }: any = opts;
   const [data, setData] = useState(null);
+  if (!url) {
+    return {
+      loading: false, 
+      data: null
+    }
+  }
   const defaultOpts = {
     url: url,
     method: 'GET',
