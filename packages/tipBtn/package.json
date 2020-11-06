@@ -12,7 +12,7 @@
     "dist/"
   ],
   "dependencies": {
-    "antd": "^4.6.3",
+    "antd": "^4.7.2",
     "cross-env": "^7.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
@@ -29,6 +29,7 @@
     "webpack-cli": "^3.3.12"
   },
   "peerDependencies": {
+    "antd": "^4.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
